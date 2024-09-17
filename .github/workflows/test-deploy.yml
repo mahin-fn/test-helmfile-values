@@ -1,0 +1,35 @@
+name: Test Helmfile Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      env_name:
+        description: "Deployment Environment Name:"
+        required: true
+
+      image_tag:
+        description: "Enter Image tag"
+        required: true
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to Code
+        uses: actions/checkout@v4
+
+      - name: Test Deploy (Diff)
+        run: |
+          if ${{ inputs.env_name }} == "dev"; then
+            image_name="docker.io/fnmahin/helmfile-dev-repo"
+          elif ${{ inputs.env_name}} == "prod"; then
+            image_name="docker.io/fnmahin/helmfile-dev-repo"
+          else
+            echo "Something went wrong"
+          fi
+
+          export env_name=${{ inputs.env_name }}
+          export tag=${{ inputs.image_tag }}
+          export repository=$image_name
+          cd deployment
+          helmfile diff

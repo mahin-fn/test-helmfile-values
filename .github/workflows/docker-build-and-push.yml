@@ -10,6 +10,11 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image-name:
+          - ${{ vars.DOCKER_DEV_IMAGE_NAME }}
+          - ${{ vars.DOCKER_PROD_IMAGE_NAME }}
     steps:
     - name: Checkout to Code
       uses: actions/checkout@v4
@@ -20,7 +25,7 @@ jobs:
       with:
         dockerhub-username: ${{ vars.DOCKERHUB_USERNAME }}
         dockerhub-token: ${{ secrets.DOCKERHUB_SECRETS }}
-        image-name: ${{ vars.DOCKER_IMAGE_NAME }}
+        image-name: ${{ matrix.image-name }}
         image-tag: ${{ github.event.inputs.image_tag }}
         dockerfile-path: "Dockerfile"
 

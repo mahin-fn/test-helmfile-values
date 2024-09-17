@@ -1,0 +1,8 @@
+service:
+  type: ClusterIP
+  port: 80
+
+
+database:
+  port: 3306
+  name: testdb

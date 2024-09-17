@@ -1,12 +1,40 @@
 {{ $app_name := env "APP_NAME" | default "golang-app"}}
+{{- $env_name := env "ENV_NAME" | default "dev" }}
 
+{{- if eq $env_name "dev" }}
 releases:
 - name: {{ $app_name }}-deployment
   namespace: {{ $app_name }}
   chart: ./chart
   version: "0.1.0"
   values:
-  - ./values/app/values.yaml
+  - ./values/app/dev/values.yml
+  - ./values/app/dev/secrets/secrets.yml
+  - ./values/app/dev/val1/val1.yml
+  - ./values/app/dev/val2/val2.yml
+
   set:
+  - name: "image.backendRepository"
+    value: {{ requiredEnv "repository" }}
   - name: "image.tag"
     value: {{ requiredEnv "tag" }}
+
+{{- else if eq $env_name "prod" }}
+- name: {{ $app_name }}-deployment
+  namespace: {{ $app_name }}-prod
+  chart: ./chart
+  version: "0.1.0"
+  values:
+  - ./values/app/prod/values.yml
+  - ./values/app/prod/secrets/secrets.yml
+  - ./values/app/prod/val1/val1.yml
+  - ./values/app/prod/val2/val2.yml
+  set:
+  - name: "image.backendRepository"
+    value: {{ requiredEnv "repository" }}
+  - name: "image.tag"
+    value: {{ requiredEnv "tag" }}
+{{- else }}
+# Handle the case where ENV_NAME is neither dev nor prod
+{{- fail "Invalid ENV_NAME. Must be 'dev' or 'prod'." }}
+{{- end }}
