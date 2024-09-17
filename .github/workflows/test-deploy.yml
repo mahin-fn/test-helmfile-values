@@ -36,11 +36,13 @@ jobs:
           helm plugin add https://github.com/databus23/helm-diff
 
           # Install Helmfile
-          HELMFILE_VERSION="0.15.0"
-          curl -LO https://github.com/helmfile/helmfile/releases/download/v$HELMFILE_VERSION/helmfile_$HELMFILE_VERSION_linux_amd64.tar.gz
-          tar xzf helmfile_$HELMFILE_VERSION_linux_amd64.tar.gz -C /usr/local/bin
+          HELMFILE_VERSION="0.159.0"  # Update to the latest version
+          HELMFILE_URL="https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz"
+          curl -Lo helmfile.tar.gz $HELMFILE_URL
+          tar xzf helmfile.tar.gz -C /tmp
+          sudo mv /tmp/helmfile /usr/local/bin/
           chmod +x /usr/local/bin/helmfile
-          rm helmfile_$HELMFILE_VERSION_linux_amd64.tar.gz
+          rm helmfile.tar.gz
 
 
       - name: Test Deploy (Diff)
