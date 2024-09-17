@@ -1,5 +1,4 @@
-name: Test Helmfile ${{ github.event.inputs.env_name }} Deploy with Tag ${{ github.event.inputs.image_tag }}
-
+name: Test Helmfile Deploy
 on:
   workflow_dispatch:
     inputs:
