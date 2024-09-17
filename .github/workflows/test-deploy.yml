@@ -49,14 +49,11 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Install kind
+      - name: Setup Local Test Cluster using Kind
         run: |
           curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
           chmod +x ./kind
           sudo mv ./kind /usr/local/bin/kind
-
-      - name: Create kind cluster
-        run: |
           kind create cluster --name test-cluster
           kubectl cluster-info --context kind-test-cluster
 
@@ -76,4 +73,8 @@ jobs:
           export repository="$image_name"
 
           cd deployment
+
+          # Check Diff
           helmfile --kube-context kind-test-cluster diff
+          # Deploy
+          # helmfile --kube-context kind-test-cluster sync
