@@ -16,7 +16,7 @@ jobs:
 
     - name: Call Composite Action
       id: build-and-push-id
-      uses: ./
+      uses: mokhlesurr031/gh-tutorial-docker-build-and-push@v1
       with:
         dockerhub-username: ${{ vars.DOCKERHUB_USERNAME }}
         dockerhub-token: ${{ secrets.DOCKERHUB_SECRETS }}
