@@ -23,6 +23,23 @@ jobs:
       - name: Checkout to Code
         uses: actions/checkout@v4
 
+      - name: Install Helm, Helmfile and Helm Diff Plugin
+        run: |
+          # Install Helm
+          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+          sudo apt-get install apt-transport-https --yes
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update
+          sudo apt-get install helm
+
+          # Install helm-fill plugin
+          helm plugin add https://github.com/databus23/helm-diff
+
+          # Install helmfile
+          curl -L https://github.com/helmfile/helmfile/releases/download/v0.15.0/helmfile_0.15.0_linux_amd64.tar.gz | tar xz -C /usr/local/bin
+          chmod +x /usr/local/bin/helmfile
+
+
       - name: Test Deploy (Diff)
         run: |
           if [ "${{ inputs.env_name }}" = "dev" ]; then
