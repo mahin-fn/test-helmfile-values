@@ -35,6 +35,5 @@ releases:
   - name: "image.tag"
     value: {{ requiredEnv "tag" }}
 {{- else }}
-# Handle the case where ENV_NAME is neither dev nor prod
 {{- fail "Invalid ENV_NAME. Must be 'dev' or 'prod'." }}
 {{- end }}
