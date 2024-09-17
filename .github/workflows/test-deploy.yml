@@ -32,12 +32,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install helm
 
-          # Install helm-fill plugin
+          # Install Helm Diff Plugin
           helm plugin add https://github.com/databus23/helm-diff
 
-          # Install helmfile
-          curl -L https://github.com/helmfile/helmfile/releases/download/v0.15.0/helmfile_0.15.0_linux_amd64.tar.gz | tar xz -C /usr/local/bin
+          # Install Helmfile
+          HELMFILE_VERSION="0.15.0"
+          curl -LO https://github.com/helmfile/helmfile/releases/download/v$HELMFILE_VERSION/helmfile_$HELMFILE_VERSION_linux_amd64.tar.gz
+          tar xzf helmfile_$HELMFILE_VERSION_linux_amd64.tar.gz -C /usr/local/bin
           chmod +x /usr/local/bin/helmfile
+          rm helmfile_$HELMFILE_VERSION_linux_amd64.tar.gz
 
 
       - name: Test Deploy (Diff)
