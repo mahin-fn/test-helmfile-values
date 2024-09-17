@@ -68,13 +68,14 @@ jobs:
             exit 1
           fi
 
-          export env_name="${{ inputs.env_name }}"
+          export ENV_NAME="${{ inputs.env_name }}"
           export tag="${{ inputs.image_tag }}"
           export repository="$image_name"
 
           cd deployment
-
-          # Check Diff
+          # Check Chart Template
+          helmfile --kube-context kind-test-cluster template
+          # Check Diff from the currently running release
           helmfile --kube-context kind-test-cluster diff
           # Deploy
           # helmfile --kube-context kind-test-cluster sync
