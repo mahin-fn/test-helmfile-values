@@ -57,7 +57,7 @@ jobs:
           kind create cluster --name test-cluster
           kubectl cluster-info --context kind-test-cluster
 
-      - name: Test Deploy in "${{ inputs.env_name }}" Environment (Diff)
+      - name: Test Deploy in Environment- "${{ inputs.env_name }}" and Tag is- "${{ inputs.image_tag }}" (Diff)
         run: |
           if [ "${{ inputs.env_name }}" = "dev" ]; then
             image_name="docker.io/fnmahin/helmfile-dev-repo"
