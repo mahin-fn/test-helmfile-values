@@ -1,0 +1,29 @@
+name: Docker Image Build and Push Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Enter Image tag"
+        required: true
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout to Code
+      uses: actions/checkout@v4
+
+    - name: Call Composite Action
+      id: build-and-push-id
+      uses: ./
+      with:
+        dockerhub-username: ${{ vars.DOCKERHUB_USERNAME }}
+        dockerhub-token: ${{ secrets.DOCKERHUB_SECRETS }}
+        image-name: ${{ vars.DOCKER_IMAGE_NAME }}
+        image-tag: ${{ github.event.inputs.image_tag }}
+        dockerfile-path: "Dockerfile"
+
+    - name: Print Result
+      run: |
+        echo "Build and Push Result is: ${{ steps.build-and-push-id.outputs.result }}"

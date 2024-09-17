@@ -1,0 +1,12 @@
+{{ $app_name := env "APP_NAME" | default "golang-app"}}
+
+releases:
+- name: {{ $app_name }}-deployment
+  namespace: {{ $app_name }}
+  chart: ./chart
+  version: "0.1.0"
+  values:
+  - ./values/app/values.yaml
+  set:
+  - name: "image.tag"
+    value: {{ requiredEnv "tag" }}

@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "chart.fullname" . }}-ingress
+  labels:
+    {{- include "chart.labels" . | nindent 4 }}
+
+  annotations:
+    kubernetes.io/ingress.class: nginx 
+spec:
+  rules:
+    - host: localhost.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "chart.fullname" . }}-svc
+                port:
+                  number: 80

@@ -1,0 +1,16 @@
+image:
+  pullPolicy: IfNotPresent
+
+deployment:
+  port: 8080
+
+service:
+  type: ClusterIP
+  port: 80
+
+database:
+  host: mysql-db
+  port: 3306
+  name: testdb
+  username: admin
+  password: secret

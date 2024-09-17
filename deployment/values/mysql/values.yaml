@@ -1,0 +1,6 @@
+auth:
+  rootPassword: "root-secret"
+  createDatabase: true
+  database: "testdb"
+  username: "admin"
+  password: "secret"
