@@ -44,6 +44,21 @@ jobs:
           chmod +x /usr/local/bin/helmfile
           rm helmfile.tar.gz
 
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Install kind
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+
+      - name: Create kind cluster
+        run: |
+          kind create cluster --name test-cluster
+          kubectl cluster-info --context kind-test-cluster
 
       - name: Test Deploy (Diff)
         run: |
@@ -61,4 +76,4 @@ jobs:
           export repository="$image_name"
 
           cd deployment
-          helmfile diff
+          helmfile --kube-context kind-test-cluster diff
