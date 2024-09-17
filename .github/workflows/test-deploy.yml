@@ -6,6 +6,11 @@ on:
       env_name:
         description: "Deployment Environment Name:"
         required: true
+        type: choice
+        options:
+          - dev
+          - prod
+        default: dev
 
       image_tag:
         description: "Enter Image tag"
@@ -20,16 +25,18 @@ jobs:
 
       - name: Test Deploy (Diff)
         run: |
-          if ${{ inputs.env_name }} == "dev"; then
+          if [ "${{ inputs.env_name }}" = "dev" ]; then
             image_name="docker.io/fnmahin/helmfile-dev-repo"
-          elif ${{ inputs.env_name}} == "prod"; then
-            image_name="docker.io/fnmahin/helmfile-dev-repo"
+          elif [ "${{ inputs.env_name }}" = "prod" ]; then
+            image_name="docker.io/fnmahin/helmfile-prod-repo"
           else
-            echo "Something went wrong"
+            echo "Invalid env_name. Must be 'dev' or 'prod'."
+            exit 1
           fi
 
-          export env_name=${{ inputs.env_name }}
-          export tag=${{ inputs.image_tag }}
-          export repository=$image_name
+          export env_name="${{ inputs.env_name }}"
+          export tag="${{ inputs.image_tag }}"
+          export repository="$image_name"
+
           cd deployment
           helmfile diff
