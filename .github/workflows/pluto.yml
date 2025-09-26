@@ -13,7 +13,5 @@ jobs:
         uses: FairwindsOps/pluto/github-action@master
       
       - name: Use pluto
-        run: |
-          ls -lha
-          pluto detect-files -d deployment
+        run: pluto detect-files -d deployment
         
