@@ -1,6 +1,6 @@
 name: Pluto
 on:
-  workflow_dispatch:
+  push:
 
 jobs:
   pluto:
