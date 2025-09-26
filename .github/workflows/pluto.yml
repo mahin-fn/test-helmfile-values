@@ -1,4 +1,4 @@
-name: pluto
+name: Pluto
 on:
   workflow_dispatch:
 
@@ -14,5 +14,5 @@ jobs:
       
       - name: Use pluto
         run: |
-          pluto detect-files -d deployments/charts
+          pluto detect-files -d deployment/charts
         
