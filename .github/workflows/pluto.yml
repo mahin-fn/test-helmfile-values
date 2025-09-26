@@ -1,0 +1,18 @@
+name: pluto
+on:
+  workflow_dispatch:
+
+jobs:
+  pluto:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Pluto
+        uses: FairwindsOps/pluto/github-action@master
+      
+      - name: Use pluto
+        run: |
+          pluto detect-files -d deployments/charts
+        
